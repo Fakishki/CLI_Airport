@@ -46,7 +46,7 @@ if __name__ == '__main__':
                         print_slowly("Invalid flight number. Please try again or type 'exit' to return to the main menu:")
                     print_slowly("Enter another flight number or type 'exit' to return to the main menu:")
                     flight_input = input()
-                main_menu()
+                continue
             elif first_input == "2":
                 print_slowly("*" * 10 + " All airlines operating at CLI " + "*" * 10)
                 show_all_airlines(all_airlines)
@@ -64,7 +64,7 @@ if __name__ == '__main__':
                         print_slowly("Invalid airline ID. Please try again or type 'exit' to return to the main menu:")
                     print_slowly("Enter another airline ID number or type 'exit' to return to the main menu:")
                     airline_input = input()
-                main_menu()
+                continue
             elif first_input == "3":
                 passenger_menu()
             elif first_input.lower() == "x":
@@ -72,6 +72,6 @@ if __name__ == '__main__':
                 return
             else:
                 print_slowly("Invalid Input.  Please try again.")
-                main_menu()
+                continue
 
 main_menu()

@@ -1,8 +1,11 @@
 # Import Any Additional sqlalchemy types here
-from sqlalchemy import Column, Integer, String, Time, ForeignKey 
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy import Column, Integer, String, Time, ForeignKey, create_engine
+from sqlalchemy.orm import relationship, backref, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import time
+
+engine = create_engine('sqlite:///development.db')
+session = sessionmaker(bind=engine)()
 
 Base = declarative_base()
 
@@ -65,8 +68,11 @@ class Passenger(Base):
     flight = relationship("Flight", back_populates="passengers")
 
     def __repr__(self):
-        # return f"Passenger: {self.name} <Flight: {self.flight.airline.name} {self.flight.flight_number}>"
-        output = f"Passenger {self.id}: {self.name} <Flight: {self.flight.airline.name} {self.flight.flight_number}>"
+        if self.flight_id is not None:
+            flight = session.query(Flight).filter(Flight.id == self.flight_id).first()
+            output = f"Passenger {self.id}: {self.name} <Flight: {flight.airline.name} {flight.flight_number}>"
+        else:
+            output = f"Passenger {self.id}: {self.name} <Flight: None>"
         words = output.split()
         for word in words:
             for char in word:

@@ -50,7 +50,7 @@ def passenger_menu():
     while True:
         print_slowly("*" * 10 + " Passengers menu " + "*" * 10)
         print_slowly("Select an option")
-        print_slowly("List => \tList all passengers")
+        print_slowly("All => \t\tList all passengers")
         print_slowly("Booked => \tList passengers currently booked on a flight")
         print_slowly("Awaiting => \tList passengers not booked on a flight")
         print_slowly("Exit => \tGo back to the Main Menu")
@@ -61,8 +61,27 @@ def passenger_menu():
         if result == "exit":
             break
 
+def book_passenger(passenger_id):
+    print_slowly("Here are the available flights:")
+    print_slowly("~" * 40)
+    show_all_flights(all_flights)
+    print_slowly("~" * 40)
+    print_slowly("Enter the flight number to book the passenger on:")
+    flight_input = input()
+    selected_flight = session.query(Flight).filter(Flight.flight_number == int(flight_input)).first()
+    if selected_flight:
+        passenger = session.query(Passenger).filter(Passenger.id == int(passenger_id)).first()
+        passenger.flight_id = selected_flight.id
+        session.commit()
+        session.refresh(passenger)
+        global awaiting_passengers
+        awaiting_passengers = [passenger for passenger in all_passengers if passenger.flight_id is None]
+        print_slowly(f"Passenger {passenger.name} has been booked on {selected_flight.airline.name} Flight {selected_flight.flight_number}.")
+    else:
+        print_slowly("Invalid flight number. Please try again or type 'exit' to return to the previous menu.")
+
 def passenger_command(user_input):
-    if user_input.lower() == "list":
+    if user_input.lower() == "all":
         print_slowly("*" * 10 + " All Passengers " + "*" * 10)
         show_all_passengers(all_passengers)
     elif user_input.lower() == "booked":
@@ -71,10 +90,27 @@ def passenger_command(user_input):
     elif user_input.lower() == "awaiting":
         print_slowly("*" * 10 + " Passengers Awaiting Flights " + "*" * 10)
         show_all_passengers(awaiting_passengers)
+        while True:
+            print_slowly("Select an option:")
+            print_slowly("1 => \tBook a passenger on a flight")
+            print_slowly("2 => \tGo back to the passengers menu")
+            print_slowly("3 => \tGo back to the main menu")
+            awaiting_input = input()
+            if awaiting_input == "1":
+                print_slowly("Enter the passenger ID to book them on a flight:")
+                passenger_id = input()
+                book_passenger(passenger_id)
+            elif awaiting_input == "2":
+                break
+            elif awaiting_input == "3":
+                return "exit"
+            else:
+                print_slowly("Invalid flight number. Please try again or type 'exit' to return to the previous menu.")
     elif user_input.lower() == "exit":
         return "exit"
     else:
         print_slowly("Invalid command. Please try again or type 'exit' to return to the main menu:")
+
 
 greeting_image = """
          ___________                |
