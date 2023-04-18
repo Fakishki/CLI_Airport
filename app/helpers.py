@@ -2,21 +2,18 @@ from ipdb import set_trace
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-# from models import Model
+from models import Airline, Flight, Passenger
 
 engine = create_engine('sqlite:///development.db')
 session = sessionmaker(bind=engine)()
 
-# ! Ex Input
-# input = input("What do you want?")
-# => type "hello"
-# print(f'You typed: {input}')
-# => Output: You typed hello
-# input() will always return a String!
+all_airlines = session.query(Airline).all()
+all_flights = session.query(Flight).all()
+all_passengers = session.query(Passenger).all()
 
-# ! Ex Helper Method, Shows all stores in a Human Readable way
-# def show_all_stores(stores):
-#     for store in stores:
-#         print("-" * 50)
-#         print(store)
-#         print("-" * 50)
+def show_all_flights(flights):
+    for flight in flights:
+        print("-" * 32)
+        print(flight)
+        print("-" * 32)
+
