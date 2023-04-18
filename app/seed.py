@@ -3,18 +3,13 @@ from faker import Faker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Airline, Flight, Passenger
+from helpers import *
 import random, time
 # from base import Base, engine
 
-def print_slowly(output):
-    for char in output:
-        print(char, end='', flush=True)
-        time.sleep(0.04)
-    print()
-
 if __name__ == '__main__':
 
-  print_slowly("Seeding 🌱...")
+  print_slowly("Planting the seeds 🌱...")
   print_slowly("Connecting to DB....")
   engine = create_engine('sqlite:///development.db')
   Session = sessionmaker(bind=engine)
@@ -102,4 +97,15 @@ if __name__ == '__main__':
   session.commit()
   print_slowly("Passengers booked")
 
-  print_slowly("Database Tables Created!")
+  print_slowly("Database Tables Created!  Let's Fly!")
+  print_kinda_slow("""
+              ______
+            _\ _~-\___
+    =  = ==(___CLI____D
+                \_____\___________________,-~~~~~~~--.._
+                /     o o o o o o o o o o o o o o o o  |\_
+                `~-.__        ___..----..                  )
+                      `---~~\___________/------------``````
+                         ===(_________D
+  """)
+  print_slowly("Enter 'python cli.py' to launch")
