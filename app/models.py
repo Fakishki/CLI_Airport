@@ -2,6 +2,7 @@
 from sqlalchemy import Column, Integer, String, Time, ForeignKey 
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
+import time
 
 Base = declarative_base()
 
@@ -14,8 +15,16 @@ class Airline(Base):
     flights = relationship("Flight", back_populates="airline")
 
     def __repr__(self):
-        return f"Airline: {self.name} (ID: {self.id})"
-    
+        output = f"Airline: {self.name} (ID: {self.id})"
+        words = output.split()
+        for word in words:
+            for char in word:
+                print(char, end='', flush=True)
+                if char != ' ':
+                    time.sleep(0.009)
+            print(' ', end='', flush=True)
+        print()
+        return ""
 
 class Flight(Base):
     __tablename__ = "flights"
@@ -31,11 +40,19 @@ class Flight(Base):
     passengers = relationship("Passenger", back_populates="flight")
 
     def __repr__(self):
-        return f"Airline:\t{self.airline.name}\n" \
+        output = f"Airline:\t{self.airline.name}\n" \
             f"Flight Number:\t{self.flight_number}\n" \
             f"Destination:\t{self.destination}\n" \
-            f"Departure Time:\t{self.departure_time}\n" \
-            f"Departure Gate:\t{self.gate}"
+            f"Departure:\t{self.departure_time}\t"f"Gate:\t{self.gate}"
+        lines = output.split('\n')
+        for line in lines:
+            for char in line:
+                print(char, end='', flush=True)
+                if char != ' ':
+                    time.sleep(0.009)
+            print('\n', end='', flush=True)
+        return ""
+
 
 
 class Passenger(Base):
@@ -48,4 +65,14 @@ class Passenger(Base):
     flight = relationship("Flight", back_populates="passengers")
 
     def __repr__(self):
-        return f"Passenger: {self.name} <Flight: {self.flight.airline.name} {self.flight.flight_number}>"
+        # return f"Passenger: {self.name} <Flight: {self.flight.airline.name} {self.flight.flight_number}>"
+        output = f"Passenger {self.id}: {self.name} <Flight: {self.flight.airline.name} {self.flight.flight_number}>"
+        words = output.split()
+        for word in words:
+            for char in word:
+                print(char, end='', flush=True)
+                if char != ' ':
+                    time.sleep(0.008)
+            print(' ', end='', flush=True)
+        print()
+        return ""

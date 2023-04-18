@@ -3,20 +3,26 @@ from faker import Faker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Airline, Flight, Passenger
-import random
+import random, time
 # from base import Base, engine
+
+def print_slowly(output):
+    for char in output:
+        print(char, end='', flush=True)
+        time.sleep(0.04)
+    print()
 
 if __name__ == '__main__':
 
-  print("Seeding 🌱...")
-  print("Connecting to DB....")
+  print_slowly("Seeding 🌱...")
+  print_slowly("Connecting to DB....")
   engine = create_engine('sqlite:///development.db')
   Session = sessionmaker(bind=engine)
   session = Session()
 
   # Base.metadata.create_all()
   
-  print("Session Created...")
+  print_slowly("Session Created...")
 
   fake = Faker()
 
@@ -25,14 +31,14 @@ if __name__ == '__main__':
     number = random.randint(1, 9)
     return capital_letter + str(number)
   
-  print("Dropping old database tables...")
+  print_slowly("Dropping old database tables...")
   session.query(Airline).delete()
   session.query(Flight).delete()
   session.query(Passenger).delete()
   session.commit()
-  print("Old Airlines, Flights, and Passengers tables deleted")
+  print_slowly("Old Airlines, Flights, and Passengers tables deleted")
 
-  print("Creating new Airline, Flight, and Passenger tables...")
+  print_slowly("Creating new Airline, Flight, and Passenger tables...")
   
   oceanic = Airline(name="Oceanic")
   ajira = Airline(name="Ajira")
@@ -42,7 +48,7 @@ if __name__ == '__main__':
 
   session.add_all([oceanic, ajira, whitestar, colonial, uga])
   session.commit()
-  print("Airlines established")
+  print_slowly("Airlines established")
   o111 = Flight(airline_id=oceanic.id, flight_number=111, destination=fake.city(), departure_time="8:00", gate=random_gate())
   o123 = Flight(airline_id=oceanic.id, flight_number=123, destination=fake.city(), departure_time="9:00", gate=random_gate())
   a222 = Flight(airline_id=ajira.id, flight_number=222, destination=fake.city(), departure_time="10:00", gate=random_gate())
@@ -56,11 +62,11 @@ if __name__ == '__main__':
 
   session.add_all([o111,o123,a222,a234,w333,w345,c444,c456,u555,u567])
   session.commit()
-  print("Flights scheduled")
+  print_slowly("Flights scheduled")
 
   flights_list = [o111, o123, a222, a234, w333, w345, c444, c456, u555, u567]
-  print("Flights gathered... compiling passenger lists")
-  
+  print_slowly("Flights gathered... compiling passenger lists")
+
   p01 = Passenger(name=fake.name(), flight_id=random.choice(flights_list).id)
   p02 = Passenger(name=fake.name(), flight_id=random.choice(flights_list).id)
   p03 = Passenger(name=fake.name(), flight_id=random.choice(flights_list).id)
@@ -94,6 +100,6 @@ if __name__ == '__main__':
 
   session.add_all([p01,p02,p03,p04,p05,p06,p07,p08,p09,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25,p26,p27,p28,p29,p30])
   session.commit()
-  print("Passengers booked")
+  print_slowly("Passengers booked")
 
-  print("Database Tables Created!")
+  print_slowly("Database Tables Created!")

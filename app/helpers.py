@@ -15,16 +15,12 @@ def show_all_flights(flights):
     for flight in flights:
         print("-" * 32)
         print(flight)
-        print("-" * 32)
 
 def show_all_airlines(airlines):
     for airline in airlines:
         print("-" * 32)
         print(airline)
-        print("-" * 32)
 
 def show_all_passengers(passengers):
     for passenger in passengers:
-        print("-" * 32)
         print(passenger)
-        print("-" * 32)
