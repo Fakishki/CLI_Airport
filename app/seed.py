@@ -3,6 +3,7 @@ from faker import Faker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Airline, Flight, Passenger
+import random
 # from base import Base, engine
 
 if __name__ == '__main__':
@@ -18,7 +19,11 @@ if __name__ == '__main__':
   print("Session Created...")
 
   fake = Faker()
-  random_gate = fake.pystr_format("?#")
+
+  def random_gate():
+    capital_letter = random.choice("ABCD")
+    number = random.randint(1, 9)
+    return capital_letter + str(number)
   
   print("Dropping old database tables...")
   session.query(Airline).delete()
@@ -38,16 +43,16 @@ if __name__ == '__main__':
   session.add_all([oceanic, ajira, whitestar, colonial, uga])
   session.commit()
   print("Airlines established")
-  o111 = Flight(airline_id=oceanic.id, flight_number=111, destination=fake.city(), departure_time="8:00", gate=random_gate)
-  o123 = Flight(airline_id=oceanic.id, flight_number=123, destination=fake.city(), departure_time="9:00", gate=random_gate)
-  a222 = Flight(airline_id=ajira.id, flight_number=222, destination=fake.city(), departure_time="10:00", gate=random_gate)
-  a234 = Flight(airline_id=ajira.id, flight_number=234, destination=fake.city(), departure_time="11:00", gate=random_gate)
-  w333 = Flight(airline_id=whitestar.id, flight_number=333, destination=fake.city(), departure_time="12:00", gate=random_gate)
-  w345 = Flight(airline_id=whitestar.id, flight_number=345, destination=fake.city(), departure_time="13:00", gate=random_gate)
-  c444 = Flight(airline_id=colonial.id, flight_number=444, destination=fake.city(), departure_time="14:00", gate=random_gate)
-  c456 = Flight(airline_id=colonial.id, flight_number=456, destination=fake.city(), departure_time="15:00", gate=random_gate)
-  u555 = Flight(airline_id=uga.id, flight_number=555, destination=fake.city(), departure_time="16:00", gate=random_gate)
-  u567 = Flight(airline_id=uga.id, flight_number=567, destination=fake.city(), departure_time="17:00", gate=random_gate)
+  o111 = Flight(airline_id=oceanic.id, flight_number=111, destination=fake.city(), departure_time="8:00", gate=random_gate())
+  o123 = Flight(airline_id=oceanic.id, flight_number=123, destination=fake.city(), departure_time="9:00", gate=random_gate())
+  a222 = Flight(airline_id=ajira.id, flight_number=222, destination=fake.city(), departure_time="10:00", gate=random_gate())
+  a234 = Flight(airline_id=ajira.id, flight_number=234, destination=fake.city(), departure_time="11:00", gate=random_gate())
+  w333 = Flight(airline_id=whitestar.id, flight_number=333, destination=fake.city(), departure_time="12:00", gate=random_gate())
+  w345 = Flight(airline_id=whitestar.id, flight_number=345, destination=fake.city(), departure_time="13:00", gate=random_gate())
+  c444 = Flight(airline_id=colonial.id, flight_number=444, destination=fake.city(), departure_time="14:00", gate=random_gate())
+  c456 = Flight(airline_id=colonial.id, flight_number=456, destination=fake.city(), departure_time="15:00", gate=random_gate())
+  u555 = Flight(airline_id=uga.id, flight_number=555, destination=fake.city(), departure_time="16:00", gate=random_gate())
+  u567 = Flight(airline_id=uga.id, flight_number=567, destination=fake.city(), departure_time="17:00", gate=random_gate())
 
   session.add_all([o111,o123,a222,a234,w333,w345,c444,c456,u555,u567])
   session.commit()
