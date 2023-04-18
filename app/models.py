@@ -11,7 +11,7 @@ class Airline(Base):
     id = Column(Integer(), primary_key=True)
     name = Column(String())
     
-    flights = relationship("Flight", back_populates=("airline"))
+    flights = relationship("Flight", back_populates="airline")
 
     def __repr__(self):
         return f"Airline: {self.name} (ID: {self.id})"
@@ -28,10 +28,11 @@ class Flight(Base):
     airline_id = Column(Integer(), ForeignKey("airlines.id"))
 
     airline = relationship("Airline", back_populates="flights")
-    passengers = relationship("Passenger", back_populates=("flight"))
+    passengers = relationship("Passenger", back_populates="flight")
 
     def __repr__(self):
-        return f"Flight Number:\t{self.flight_number}\n" \
+        return f"Airline:\t{self.airline.name}\n" \
+            f"Flight Number:\t{self.flight_number}\n" \
             f"Destination:\t{self.destination}\n" \
             f"Departure Time:\t{self.departure_time}\n" \
             f"Departure Gate:\t{self.gate}"
@@ -47,4 +48,4 @@ class Passenger(Base):
     flight = relationship("Flight", back_populates="passengers")
 
     def __repr__(self):
-        return f"Passenger: {self.name} <ID: {self.id}>"
+        return f"Passenger: {self.name} <Flight: {self.flight.airline.name} {self.flight.flight_number}>"
