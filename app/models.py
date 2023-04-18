@@ -72,7 +72,7 @@ class Passenger(Base):
             for char in word:
                 print(char, end='', flush=True)
                 if char != ' ':
-                    time.sleep(0.008)
+                    time.sleep(0.004)
             print(' ', end='', flush=True)
         print()
         return ""
