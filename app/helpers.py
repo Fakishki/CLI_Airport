@@ -37,3 +37,16 @@ def show_all_airlines(airlines):
 def show_all_passengers(passengers):
     for passenger in passengers:
         print(passenger)
+
+greeting_image = """
+         ___________                |
+        |CLI Airport|               |
+         ```````````                |
+                                  .-'-.
+                                 ' ___ '
+                       ---------'  .-.  '---------
+       _________________________'  '-'  '_________________________
+        ''''''-|---|--/    \==][^',_m_,'^][==/    \--|---|-''''''
+                      \    /  ||/   H   \||  \    /
+                       '--'   OO   O|O   OO   '--'
+"""
