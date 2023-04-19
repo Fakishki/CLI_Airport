@@ -9,10 +9,6 @@ import time
 engine = create_engine('sqlite:///development.db')
 session = sessionmaker(bind=engine)()
 
-# all_airlines = session.query(Airline).all()
-# all_flights = session.query(Flight).all()
-# all_passengers = session.query(Passenger).all()
-
 def all_airlines():
     all_airlines = session.query(Airline).all()
     for airline in all_airlines:
@@ -45,16 +41,20 @@ if __name__ == '__main__':
                 print_slowly("Enter the flight number to see details, or type 'exit' to return to the main menu:")
                 flight_input = input()
                 while flight_input.lower() != "exit":
-                    selected_flight = session.query(Flight).filter(Flight.flight_number == int(flight_input)).first()
-                    if selected_flight:
-                        print("******** Flight information ********")
-                        print(selected_flight)
-                        passengers_on_flight = session.query(Passenger).filter(Passenger.flight_id == selected_flight.id).all()
-                        print("******** Passengers on this flight: ********")
-                        for passenger in passengers_on_flight:
-                            print(passenger)
-                    else:
-                        print_slowly("Invalid flight number. Please try again or type 'exit' to return to the main menu:")
+                    try:
+                        flight_input_int = int(flight_input)
+                        selected_flight = session.query(Flight).filter(Flight.flight_number == int(flight_input)).first()
+                        if selected_flight:
+                            print("******** Flight information ********")
+                            print(selected_flight)
+                            passengers_on_flight = session.query(Passenger).filter(Passenger.flight_id == selected_flight.id).all()
+                            print("******** Passengers on this flight: ********")
+                            for passenger in passengers_on_flight:
+                                print(passenger)
+                        else:
+                            print_slowly("Invalid flight number. That's okay. Remain calm. We'll try this again.")
+                    except ValueError:
+                        print_slowly("Invalid input. Come on. That's not even an integer, you silly goose. It's time go get serious.")
                     print_slowly("Enter another flight number or type 'exit' to return to the main menu:")
                     flight_input = input()
                 continue
@@ -64,17 +64,20 @@ if __name__ == '__main__':
                 print_slowly("Enter the airline's ID number to see scheduled flights, or type 'exit' to return to the main menu:")
                 airline_input = input()
                 while airline_input.lower() != "exit":
-                    selected_airline = session.query(Airline).filter(Airline.id == int(airline_input)).first()
-                    if selected_airline:
-                        print("******** Airline information ********")
-                        print(selected_airline)
-                        airline_flights = session.query(Flight).filter(Flight.airline_id == selected_airline.id).all()
-                        print("******** Airline's scheduled flights: ********")
-                        for flight in airline_flights:
-                            print(flight)
-                        # all_flights(airline_flights)
-                    else:
-                        print_slowly("Invalid airline ID. Please try again or type 'exit' to return to the main menu:")
+                    try:
+                        airline_input_int = int(airline_input)
+                        selected_airline = session.query(Airline).filter(Airline.id == int(airline_input)).first()
+                        if selected_airline:
+                            print("******** Airline information ********")
+                            print(selected_airline)
+                            airline_flights = session.query(Flight).filter(Flight.airline_id == selected_airline.id).all()
+                            print("******** Airline's scheduled flights: ********")
+                            for flight in airline_flights:
+                                print(flight)
+                        else:
+                            print_slowly("Invalid airline ID. That's alright. Take a breath, and try again.")
+                    except ValueError:
+                        print_slowly("Invalid input. Come on. That's not even an integer, you silly goose. It's time go get serious.")
                     print_slowly("Enter another airline ID number or type 'exit' to return to the main menu:")
                     airline_input = input()
                 continue
