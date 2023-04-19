@@ -8,7 +8,7 @@ from models import Airline, Flight, Passenger
 engine = create_engine('sqlite:///development.db')
 session = sessionmaker(bind=engine)()
 
-all_airlines = session.query(Airline).all()
+# all_airlines = session.query(Airline).all()
 all_flights = session.query(Flight).all()
 # all_passengers = session.query(Passenger).all()
 # booked_passengers = [passenger for passenger in all_passengers if passenger.flight_id is not None]
@@ -17,22 +17,22 @@ all_flights = session.query(Flight).all()
 def print_slowly(output):
     for char in output:
         print(char, end='', flush=True)
-        # time.sleep(0.02)
-        time.sleep(0)
+        time.sleep(0.02)
+        # time.sleep(0)
     print()
 
 def print_kinda_slow(output):
     for char in output:
         print(char, end='', flush=True)
-        # time.sleep(0.008)
-        time.sleep(0)
+        time.sleep(0.008)
+        # time.sleep(0)
     print()
 
 def print_rapidly(output):
     for char in output:
         print(char, end='', flush=True)
-        # time.sleep(0.004)
-        time.sleep(0)
+        time.sleep(0.004)
+        # time.sleep(0)
     print()
 
 def show_all_flights(flights):
@@ -56,7 +56,7 @@ def show_awaiting_passengers():
         print(passenger)
 
 def show_booked_passengers():
-    booked_passengers = session.query(Passenger).filter_by(flight_id = True).all()
+    booked_passengers = session.query(Passenger).filter(Passenger.flight_id != None).all()
     for passenger in booked_passengers:
         print(passenger)
 
