@@ -79,7 +79,13 @@ def book_passenger(passenger_id):
     awaiting_passengers = session.query(Passenger).filter_by(flight_id=None).all()
     valid_ids = [passenger.id for passenger in awaiting_passengers]
 
-    if int(passenger_id) not in valid_ids:
+    try:
+        passenger_id_int = int(passenger_id)
+    except ValueError:
+        print_slowly("Hey now! That's not even an integer. Let's step back here a moment...")
+        return
+
+    if passenger_id_int not in valid_ids:
         print_slowly("Whoa there! That's not a valid passenger ID. Let's step back here a moment...")
         return
     
@@ -89,6 +95,13 @@ def book_passenger(passenger_id):
     print_slowly("~" * 40)
     print_slowly("Enter the flight number to book the passenger on:")
     flight_input = input()
+
+    try:
+        flight_input_int = int(flight_input)
+    except ValueError:
+        print_slowly("Now you're just being silly. That's not a valid flight number. Let's try this again.")
+        return
+    
     selected_flight = session.query(Flight).filter(Flight.flight_number == int(flight_input)).first()
     if selected_flight:
         passenger = session.query(Passenger).filter(Passenger.id == int(passenger_id)).first()
@@ -96,7 +109,7 @@ def book_passenger(passenger_id):
         session.commit()
         print_slowly(f"Passenger {passenger.name} has been booked on {selected_flight.airline.name} Flight {selected_flight.flight_number}.")
     else:
-        print_slowly("Invalid flight number. Please try again or type 'exit' to return to the previous menu.")
+        print_slowly("Invalid flight number. That's okay. Let's start over.")
 
 def passenger_command(user_input):
     if user_input.lower() == "all":
@@ -123,7 +136,7 @@ def passenger_command(user_input):
             elif awaiting_input == "3":
                 return "exit"
             else:
-                print_slowly("Invalid flight number. Please try again or type 'exit' to return to the previous menu.")
+                print_slowly("Invalid selection. Come on... there are only three choices.")
     elif user_input.lower() == "exit":
         return "exit"
     else:
