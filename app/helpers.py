@@ -84,11 +84,9 @@ def book_passenger(passenger_id):
     flight_input = input()
     selected_flight = session.query(Flight).filter(Flight.flight_number == int(flight_input)).first()
     if selected_flight:
-        # session.query(Passenger).filter(Passenger.id == passenger_id).update(Passenger.flight_id == flight_input)
         passenger = session.query(Passenger).filter(Passenger.id == int(passenger_id)).first()
         passenger.flight_id = selected_flight.id
         session.commit()
-        # session.refresh(passenger)
         print_slowly(f"Passenger {passenger.name} has been booked on {selected_flight.airline.name} Flight {selected_flight.flight_number}.")
     else:
         print_slowly("Invalid flight number. Please try again or type 'exit' to return to the previous menu.")
@@ -137,3 +135,4 @@ greeting_image = """
                       \    /  ||/   H   \||  \    /
                        '--'   OO   O|O   OO   '--'
 """
+# goodbye_message = 

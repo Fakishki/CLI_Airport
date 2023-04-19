@@ -82,6 +82,7 @@ if __name__ == '__main__':
                 passenger_menu()
             elif first_input.lower() == "x":
                 print_slowly("Thank you for visiting CLI Airport. We hope you didn't mess up anyone else's intinerary. Safe travels!")
+                print_slowly("Okay, goodbye now.")
                 return
             else:
                 print_slowly("Invalid Input.  Please try again.")
