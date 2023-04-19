@@ -8,11 +8,7 @@ from models import Airline, Flight, Passenger, Bag
 engine = create_engine('sqlite:///development.db')
 session = sessionmaker(bind=engine)()
 
-# all_airlines = session.query(Airline).all()
 all_flights = session.query(Flight).all()
-# all_passengers = session.query(Passenger).all()
-# booked_passengers = [passenger for passenger in all_passengers if passenger.flight_id is not None]
-# awaiting_passengers = [passenger for passenger in all_passengers if passenger.flight_id is None]
 
 def print_slowly(output):
     for char in output:
