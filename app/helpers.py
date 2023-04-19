@@ -76,6 +76,13 @@ def passenger_menu():
             break
 
 def book_passenger(passenger_id):
+    awaiting_passengers = session.query(Passenger).filter_by(flight_id=None).all()
+    valid_ids = [passenger.id for passenger in awaiting_passengers]
+
+    if int(passenger_id) not in valid_ids:
+        print_slowly("Whoa there! That's not a valid passenger ID. Let's step back here a moment...")
+        return
+    
     print_slowly("Here are the available flights:")
     print_slowly("~" * 40)
     show_all_flights(all_flights)
