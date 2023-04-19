@@ -2,9 +2,9 @@ from ipdb import set_trace
 from faker import Faker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Airline, Flight, Passenger
+from models import Airline, Flight, Passenger, Bag
 from helpers import *
-import random, time
+import random, string, time
 # from base import Base, engine
 
 if __name__ == '__main__':
@@ -26,10 +26,16 @@ if __name__ == '__main__':
     number = random.randint(1, 9)
     return capital_letter + str(number)
   
+  def bag_tag():
+    letters = string.ascii_uppercase
+    bag_tag = ''.join(random.choices(letters, k=4))
+    return bag_tag
+  
   print_slowly("Dropping old database tables...")
   session.query(Airline).delete()
   session.query(Flight).delete()
   session.query(Passenger).delete()
+  session.query(Bag).delete()
   session.commit()
   print_slowly("Old Airlines, Flights, and Passengers tables deleted")
 
@@ -106,6 +112,51 @@ if __name__ == '__main__':
   session.add_all([p01,p02,p03,p04,p05,p06,p07,p08,p09,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25,p26,p27,p28,p29,p30,p31,p32,p33,p34,p35,p36,p37,p38,p39,p40])
   session.commit()
   print_slowly("Passengers booked")
+
+  b01 = Bag(name=bag_tag(), passenger_id=p01.id)
+  b02 = Bag(name=bag_tag(), passenger_id=p02.id)
+  b03 = Bag(name=bag_tag(), passenger_id=p03.id)
+  b04 = Bag(name=bag_tag(), passenger_id=p04.id)
+  b05 = Bag(name=bag_tag(), passenger_id=p05.id)
+  b06 = Bag(name=bag_tag(), passenger_id=p06.id)
+  b07 = Bag(name=bag_tag(), passenger_id=p07.id)
+  b08 = Bag(name=bag_tag(), passenger_id=p08.id)
+  b09 = Bag(name=bag_tag(), passenger_id=p09.id)
+  b10 = Bag(name=bag_tag(), passenger_id=p10.id)
+  b11 = Bag(name=bag_tag(), passenger_id=p11.id)
+  b12 = Bag(name=bag_tag(), passenger_id=p12.id)
+  b13 = Bag(name=bag_tag(), passenger_id=p13.id)
+  b14 = Bag(name=bag_tag(), passenger_id=p14.id)
+  b15 = Bag(name=bag_tag(), passenger_id=p15.id)
+  b16 = Bag(name=bag_tag(), passenger_id=p16.id)
+  b17 = Bag(name=bag_tag(), passenger_id=p17.id)
+  b18 = Bag(name=bag_tag(), passenger_id=p18.id)
+  b19 = Bag(name=bag_tag(), passenger_id=p19.id)
+  b20 = Bag(name=bag_tag(), passenger_id=p20.id)
+  b21 = Bag(name=bag_tag(), passenger_id=p21.id)
+  b22 = Bag(name=bag_tag(), passenger_id=p22.id)
+  b23 = Bag(name=bag_tag(), passenger_id=p23.id)
+  b24 = Bag(name=bag_tag(), passenger_id=p24.id)
+  b25 = Bag(name=bag_tag(), passenger_id=p25.id)
+  b26 = Bag(name=bag_tag(), passenger_id=p26.id)
+  b27 = Bag(name=bag_tag(), passenger_id=p27.id)
+  b28 = Bag(name=bag_tag(), passenger_id=p28.id)
+  b29 = Bag(name=bag_tag(), passenger_id=p29.id)
+  b30 = Bag(name=bag_tag(), passenger_id=p30.id)
+  b31 = Bag(name=bag_tag(), passenger_id=p31.id)
+  b32 = Bag(name=bag_tag(), passenger_id=p32.id)
+  b33 = Bag(name=bag_tag(), passenger_id=p33.id)
+  b34 = Bag(name=bag_tag(), passenger_id=p34.id)
+  b35 = Bag(name=bag_tag(), passenger_id=p35.id)
+  b36 = Bag(name=bag_tag(), passenger_id=p36.id)
+  b37 = Bag(name=bag_tag(), passenger_id=p37.id)
+  b38 = Bag(name=bag_tag(), passenger_id=p38.id)
+  b39 = Bag(name=bag_tag(), passenger_id=p39.id)
+  b40 = Bag(name=bag_tag(), passenger_id=p40.id)
+
+  session.add_all([b01,b02,b03,b04,b05,b06,b07,b08,b09,b10,b11,b12,b13,b14,b15,b16,b17,b18,b19,b20,b21,b22,b23,b24,b25,b26,b27,b28,b29,b30,b31,b32,b33,b34,b35,b36,b37,b38,b39,b40])
+  session.commit()
+  print_slowly("Bags are being loaded on the plane... whoops! Dropped one. Got it though. Trust me. It'll ge there at some point...")
 
   print_slowly("Database Tables Created!  Let's Fly!")
   print_kinda_slow("""

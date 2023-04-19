@@ -1,9 +1,9 @@
 from ipdb import set_trace
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, aliased
 import time
 
-from models import Airline, Flight, Passenger
+from models import Airline, Flight, Passenger, Bag
 
 engine = create_engine('sqlite:///development.db')
 session = sessionmaker(bind=engine)()
@@ -59,6 +59,17 @@ def show_booked_passengers():
     booked_passengers = session.query(Passenger).filter(Passenger.flight_id != None).all()
     for passenger in booked_passengers:
         print(passenger)
+
+def show_all_bags_by_tag():
+    all_bags = session.query(Bag).order_by(Bag.name).all()
+    for bag in all_bags:
+        print(bag)
+
+def show_all_bags_by_passenger():
+    PassengerAlias = aliased(Passenger)
+    all_bags = session.query(Bag).join(PassengerAlias, Bag.passenger_id == PassengerAlias.id).order_by(PassengerAlias.name).all()
+    for bag in all_bags:
+        print(bag)
 
 def passenger_menu():
     while True:
@@ -189,6 +200,32 @@ def passenger_command(user_input):
                 return "exit"
             else:
                 print_slowly("Invalid selection. Come on... there are only three choices.")
+    elif user_input.lower() == "exit":
+        return "exit"
+    else:
+        print_slowly("Invalid command. Please try again or type 'exit' to return to the main menu:")
+
+def bag_menu():
+    while True:
+        print_slowly("*" * 10 + " Luggage Menu " + "*" * 10)
+        print_slowly("To help lost luggage find its owner, select an option below:")
+        print_slowly("Bag => \t\tList all luggage ordered by bag tag")
+        print_slowly("Passenger => \tList all luggage ordered by passenger name")
+        print_slowly("Exit => \tGo back to the Main Menu")
+        print_slowly("*" * 37)
+        print_slowly("Enter your command:")
+        bag_input = input()
+        result = bag_command(bag_input)
+        if result == "exit":
+            break
+
+def bag_command(user_input):
+    if user_input.lower() == "bag":
+        print_slowly("*" * 10 + " Luggage listed by bag tag " + "*" * 10)
+        show_all_bags_by_tag()
+    elif user_input.lower() == "passenger":
+        print_slowly("*" * 10 + " Luggage listed by passenger name " + "*" * 10)
+        show_all_bags_by_passenger()
     elif user_input.lower() == "exit":
         return "exit"
     else:

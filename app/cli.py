@@ -30,6 +30,7 @@ if __name__ == '__main__':
             print_slowly("1 => \tFlights")
             print_slowly("2 => \tAirlines")
             print_slowly("3 => \tPassengers")
+            print_slowly("4 => \tLuggage Lost & Found")
             print_slowly("X => \tExit Application")
             print_slowly("***************************")
             print_slowly("Enter your command:")
@@ -83,6 +84,8 @@ if __name__ == '__main__':
                 continue
             elif first_input == "3":
                 passenger_menu()
+            elif first_input == "4":
+                bag_menu()
             elif first_input.lower() == "x":
                 print_slowly("Thank you for visiting CLI Airport. We hope you didn't mess up anyone else's intinerary. Safe travels!")
                 print_slowly("Okay, goodbye now.")

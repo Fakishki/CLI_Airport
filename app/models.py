@@ -66,6 +66,7 @@ class Passenger(Base):
     flight_id = Column(Integer(), ForeignKey("flights.id"))
 
     flight = relationship("Flight", back_populates="passengers")
+    bags = relationship("Bag", back_populates="passenger")
 
     def __repr__(self):
         if self.flight_id is not None:
@@ -73,6 +74,31 @@ class Passenger(Base):
             output = f"Passenger {self.id}: {self.name} <Flight: {flight.airline.name} {flight.flight_number}>"
         else:
             output = f"Passenger {self.id}: {self.name} <Flight: None>"
+        words = output.split()
+        for word in words:
+            for char in word:
+                print(char, end='', flush=True)
+                if char != ' ':
+                    time.sleep(0.004)
+            print(' ', end='', flush=True)
+        print()
+        return ""
+
+class Bag(Base):
+    __tablename__ = "bags"
+
+    id = Column(Integer(), primary_key=True)
+    name = Column(String())
+    passenger_id = Column(Integer(), ForeignKey("passengers.id"))
+
+    passenger = relationship("Passenger", back_populates="bags")
+
+    def __repr__(self):
+        if self.passenger.flight_id is not None:
+            passenger = session.query(Passenger).filter(Passenger.id == self.passenger_id).first()
+            output = f"Bag Tag: {self.id} [{self.name}] Owner: {passenger.name} <Flight: {passenger.flight.airline.name} {passenger.flight.flight_number}>"
+        else:
+            output = f"Bag Tag: {self.id} [{self.name}] Owner: {self.passenger.name} <Flight: None>"
         words = output.split()
         for word in words:
             for char in word:
