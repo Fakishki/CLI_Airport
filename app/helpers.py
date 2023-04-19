@@ -10,26 +10,29 @@ session = sessionmaker(bind=engine)()
 
 all_airlines = session.query(Airline).all()
 all_flights = session.query(Flight).all()
-all_passengers = session.query(Passenger).all()
-booked_passengers = [passenger for passenger in all_passengers if passenger.flight_id is not None]
-awaiting_passengers = [passenger for passenger in all_passengers if passenger.flight_id is None]
+# all_passengers = session.query(Passenger).all()
+# booked_passengers = [passenger for passenger in all_passengers if passenger.flight_id is not None]
+# awaiting_passengers = [passenger for passenger in all_passengers if passenger.flight_id is None]
 
 def print_slowly(output):
     for char in output:
         print(char, end='', flush=True)
-        time.sleep(0.02)
+        # time.sleep(0.02)
+        time.sleep(0)
     print()
 
 def print_kinda_slow(output):
     for char in output:
         print(char, end='', flush=True)
-        time.sleep(0.008)
+        # time.sleep(0.008)
+        time.sleep(0)
     print()
 
 def print_rapidly(output):
     for char in output:
         print(char, end='', flush=True)
-        time.sleep(0.004)
+        # time.sleep(0.004)
+        time.sleep(0)
     print()
 
 def show_all_flights(flights):
@@ -42,8 +45,19 @@ def show_all_airlines(airlines):
         print("-" * 32)
         print(airline)
 
-def show_all_passengers(passengers):
-    for passenger in passengers:
+def show_all_passengers():
+    all_passengers = session.query(Passenger).all()
+    for passenger in all_passengers:
+        print(passenger)
+
+def show_awaiting_passengers():
+    awaiting_passengers = session.query(Passenger).filter_by(flight_id = None).all()
+    for passenger in awaiting_passengers:
+        print(passenger)
+
+def show_booked_passengers():
+    booked_passengers = session.query(Passenger).filter_by(flight_id = True).all()
+    for passenger in booked_passengers:
         print(passenger)
 
 def passenger_menu():
@@ -70,12 +84,11 @@ def book_passenger(passenger_id):
     flight_input = input()
     selected_flight = session.query(Flight).filter(Flight.flight_number == int(flight_input)).first()
     if selected_flight:
+        # session.query(Passenger).filter(Passenger.id == passenger_id).update(Passenger.flight_id == flight_input)
         passenger = session.query(Passenger).filter(Passenger.id == int(passenger_id)).first()
         passenger.flight_id = selected_flight.id
         session.commit()
-        session.refresh(passenger)
-        global awaiting_passengers
-        awaiting_passengers = [passenger for passenger in all_passengers if passenger.flight_id is None]
+        # session.refresh(passenger)
         print_slowly(f"Passenger {passenger.name} has been booked on {selected_flight.airline.name} Flight {selected_flight.flight_number}.")
     else:
         print_slowly("Invalid flight number. Please try again or type 'exit' to return to the previous menu.")
@@ -83,13 +96,13 @@ def book_passenger(passenger_id):
 def passenger_command(user_input):
     if user_input.lower() == "all":
         print_slowly("*" * 10 + " All Passengers " + "*" * 10)
-        show_all_passengers(all_passengers)
+        show_all_passengers()
     elif user_input.lower() == "booked":
         print_slowly("*" * 10 + " Booked Passengers " + "*" * 10)
-        show_all_passengers(booked_passengers)
+        show_booked_passengers()
     elif user_input.lower() == "awaiting":
         print_slowly("*" * 10 + " Passengers Awaiting Flights " + "*" * 10)
-        show_all_passengers(awaiting_passengers)
+        show_awaiting_passengers()
         while True:
             print_slowly("Select an option:")
             print_slowly("1 => \tBook a passenger on a flight")

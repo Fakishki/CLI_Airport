@@ -9,9 +9,19 @@ import time
 engine = create_engine('sqlite:///development.db')
 session = sessionmaker(bind=engine)()
 
-all_airlines = session.query(Airline).all()
-all_flights = session.query(Flight).all()
-all_passengers = session.query(Passenger).all()
+# all_airlines = session.query(Airline).all()
+# all_flights = session.query(Flight).all()
+# all_passengers = session.query(Passenger).all()
+
+def all_airlines():
+    all_airlines = session.query(Airline).all()
+    for airline in all_airlines:
+        print(airline)
+
+def all_flights():
+    all_flights = session.query(Flight).all()
+    for flight in all_flights:
+        print(flight)
 
 if __name__ == '__main__':
     print_kinda_slow(greeting_image)
@@ -31,7 +41,7 @@ if __name__ == '__main__':
 
             if first_input == "1":
                 print_slowly("********** Today's scheduled flights **********")
-                show_all_flights(all_flights)
+                all_flights()
                 print_slowly("Enter the flight number to see details, or type 'exit' to return to the main menu:")
                 flight_input = input()
                 while flight_input.lower() != "exit":
@@ -41,7 +51,8 @@ if __name__ == '__main__':
                         print(selected_flight)
                         passengers_on_flight = session.query(Passenger).filter(Passenger.flight_id == selected_flight.id).all()
                         print("******** Passengers on this flight: ********")
-                        show_all_passengers(passengers_on_flight)
+                        for passenger in passengers_on_flight:
+                            print(passenger)
                     else:
                         print_slowly("Invalid flight number. Please try again or type 'exit' to return to the main menu:")
                     print_slowly("Enter another flight number or type 'exit' to return to the main menu:")
@@ -49,7 +60,7 @@ if __name__ == '__main__':
                 continue
             elif first_input == "2":
                 print_slowly("*" * 10 + " All airlines operating at CLI " + "*" * 10)
-                show_all_airlines(all_airlines)
+                all_airlines()
                 print_slowly("Enter the airline's ID number to see scheduled flights, or type 'exit' to return to the main menu:")
                 airline_input = input()
                 while airline_input.lower() != "exit":
@@ -59,7 +70,9 @@ if __name__ == '__main__':
                         print(selected_airline)
                         airline_flights = session.query(Flight).filter(Flight.airline_id == selected_airline.id).all()
                         print("******** Airline's scheduled flights: ********")
-                        show_all_flights(airline_flights)
+                        for flight in airline_flights:
+                            print(flight)
+                        # all_flights(airline_flights)
                     else:
                         print_slowly("Invalid airline ID. Please try again or type 'exit' to return to the main menu:")
                     print_slowly("Enter another airline ID number or type 'exit' to return to the main menu:")
